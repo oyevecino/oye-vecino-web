@@ -1,7 +1,7 @@
 {
   "eventos": [
     {
-      "nombre": "Prueba 1",
+      "nombre": "Prueba 1 web",
       "fecha": "01 Ago 2026",
       "lugar": "Madrid",
       "bio": "Evento de prueba para revisar cómo se ve la tarjeta destacada en la página principal.",
