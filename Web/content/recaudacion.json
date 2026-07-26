@@ -3,16 +3,28 @@
     {
       "titulo": "Prueba 1",
       "fecha": "01 Ago 2026",
-      "bruto": 1000,
-      "costes": 200,
-      "neto": 800,
+      "bruto": 5000,
+      "costes": 750,
+      "neto": 4247,
       "desglose_gastos": [
-        { "concepto": "Alquiler de espacio", "monto": 120 },
-        { "concepto": "Catering", "monto": 80 }
+        {
+          "concepto": "Alquiler de espacio",
+          "monto": 900
+        },
+        {
+          "concepto": "Catering",
+          "monto": 80
+        }
       ],
       "donaciones": [
-        { "origen": "Entradas del evento", "monto": 700 },
-        { "origen": "Aporte extra de un asistente", "monto": 300 }
+        {
+          "origen": "Entradas del evento",
+          "monto": 700
+        },
+        {
+          "origen": "Aporte extra de un asistente",
+          "monto": 300
+        }
       ],
       "notas": "Cifras de prueba para ver cómo se refleja el evento Prueba 1 en la sección de Recaudación."
     }
