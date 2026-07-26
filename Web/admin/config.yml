@@ -1,0 +1,77 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "content/uploads"
+public_folder: "/content/uploads"
+
+collections:
+  - name: "eventos"
+    label: "Eventos"
+    files:
+      - file: "content/eventos.json"
+        label: "Lista de eventos"
+        name: "eventos"
+        fields:
+          - label: "Eventos"
+            name: "eventos"
+            widget: "list"
+            summary: "{{nombre}} — {{fecha}}"
+            fields:
+              - { label: "Nombre", name: "nombre", widget: "string" }
+              - { label: "Fecha", name: "fecha", widget: "string", hint: "Ej: 01 Ago 2026" }
+              - { label: "Lugar", name: "lugar", widget: "string", required: false }
+              - { label: "Descripción", name: "bio", widget: "text" }
+              - { label: "Mostrar en portada (destacado)", name: "destacado", widget: "boolean", default: true }
+              - { label: "Foto de portada", name: "cover", widget: "image", required: false }
+
+  - name: "recaudacion"
+    label: "Recaudación"
+    files:
+      - file: "content/recaudacion.json"
+        label: "Registros de recaudación"
+        name: "recaudacion"
+        fields:
+          - label: "Registros"
+            name: "registros"
+            widget: "list"
+            summary: "{{titulo}} — {{fecha}}"
+            fields:
+              - { label: "Título (usa el mismo nombre del evento si aplica)", name: "titulo", widget: "string" }
+              - { label: "Fecha", name: "fecha", widget: "string", hint: "Ej: 01 Ago 2026" }
+              - { label: "Recaudado bruto (opcional)", name: "bruto", widget: "number", required: false, value_type: "float" }
+              - { label: "Costes", name: "costes", widget: "number", value_type: "float" }
+              - { label: "Neto al fondo", name: "neto", widget: "number", value_type: "float" }
+              - { label: "Notas", name: "notas", widget: "text", required: false }
+              - label: "Desglose de gastos"
+                name: "desglose_gastos"
+                widget: "list"
+                required: false
+                fields:
+                  - { label: "Concepto", name: "concepto", widget: "string" }
+                  - { label: "Monto", name: "monto", widget: "number", value_type: "float" }
+              - label: "Donaciones y aportes"
+                name: "donaciones"
+                widget: "list"
+                required: false
+                fields:
+                  - { label: "Origen", name: "origen", widget: "string" }
+                  - { label: "Nota", name: "nota", widget: "string", required: false }
+                  - { label: "Monto", name: "monto", widget: "number", value_type: "float" }
+
+  - name: "equipo"
+    label: "Equipo"
+    files:
+      - file: "content/equipo.json"
+        label: "Miembros del equipo"
+        name: "equipo"
+        fields:
+          - label: "Miembros"
+            name: "miembros"
+            widget: "list"
+            summary: "{{nombre}} — {{rol}}"
+            fields:
+              - { label: "Nombre", name: "nombre", widget: "string" }
+              - { label: "Rol", name: "rol", widget: "string" }
+              - { label: "Descripción", name: "bio", widget: "text" }
+              - { label: "Foto", name: "foto", widget: "image", required: false }
