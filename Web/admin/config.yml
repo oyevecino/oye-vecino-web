@@ -2,14 +2,14 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "content/uploads"
+media_folder: "Web/content/uploads"
 public_folder: "/content/uploads"
 
 collections:
   - name: "eventos"
     label: "Eventos"
     files:
-      - file: "content/eventos.json"
+      - file: "Web/content/eventos.json"
         label: "Lista de eventos"
         name: "eventos"
         fields:
@@ -28,7 +28,7 @@ collections:
   - name: "recaudacion"
     label: "Recaudación"
     files:
-      - file: "content/recaudacion.json"
+      - file: "Web/content/recaudacion.json"
         label: "Registros de recaudación"
         name: "recaudacion"
         fields:
@@ -62,7 +62,7 @@ collections:
   - name: "equipo"
     label: "Equipo"
     files:
-      - file: "content/equipo.json"
+      - file: "Web/content/equipo.json"
         label: "Miembros del equipo"
         name: "equipo"
         fields:
