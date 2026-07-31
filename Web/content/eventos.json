@@ -1,13 +1,20 @@
 {
   "eventos": [
     {
-      "nombre": "Prueba 1 web",
+      "nombre": "Prueba 1",
       "fecha": "01 Ago 2026",
       "lugar": "Madrid",
       "bio": "Evento de prueba para revisar cómo se ve la tarjeta destacada en la página principal.",
       "destacado": true,
-      "galeria": [],
-      "cover": "/content/uploads/logo-oye-vecino-1-.svg"
+      "galeria": []
+    },
+    {
+      "nombre": "Prueba 2",
+      "fecha": "15 Ago 2026",
+      "lugar": "Madrid",
+      "bio": "Segundo evento de prueba para revisar el diseño de la sección de eventos con dos tarjetas destacadas.",
+      "destacado": true,
+      "galeria": []
     }
   ]
 }
