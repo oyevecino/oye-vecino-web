@@ -1,9 +1,34 @@
 {
   "miembros": [
-    { "nombre": "Nombre Apellido", "rol": "Rol en el equipo", "bio": "Breve descripción de su papel en Oye Vecino y su vínculo con el proyecto.", "foto": "" },
-    { "nombre": "Nombre Apellido", "rol": "Rol en el equipo", "bio": "Breve descripción de su papel en Oye Vecino y su vínculo con el proyecto.", "foto": "" },
-    { "nombre": "Nombre Apellido", "rol": "Rol en el equipo", "bio": "Breve descripción de su papel en Oye Vecino y su vínculo con el proyecto.", "foto": "" },
-    { "nombre": "Nombre Apellido", "rol": "Rol en el equipo", "bio": "Breve descripción de su papel en Oye Vecino y su vínculo con el proyecto.", "foto": "" },
-    { "nombre": "Nombre Apellido", "rol": "Rol en el equipo", "bio": "Breve descripción de su papel en Oye Vecino y su vínculo con el proyecto.", "foto": "" }
+    {
+      "nombre": "Cristina Márquez",
+      "rol": "Rol en el equipo",
+      "bio": "Breve descripción de su papel en Oye Vecino y su vínculo con el proyecto.",
+      "foto": ""
+    },
+    {
+      "nombre": "Guillermo Aguilar",
+      "rol": "Rol en el equipo",
+      "bio": "Breve descripción de su papel en Oye Vecino y su vínculo con el proyecto.",
+      "foto": ""
+    },
+    {
+      "nombre": "Isabella Guerra",
+      "rol": "Rol en el equipo",
+      "bio": "Breve descripción de su papel en Oye Vecino y su vínculo con el proyecto.",
+      "foto": ""
+    },
+    {
+      "nombre": "Daniel Martínez",
+      "rol": "Rol en el equipo",
+      "bio": "Breve descripción de su papel en Oye Vecino y su vínculo con el proyecto.",
+      "foto": ""
+    },
+    {
+      "nombre": "Ramón Vallenilla",
+      "rol": "Rol en el equipo",
+      "bio": "Breve descripción de su papel en Oye Vecino y su vínculo con el proyecto.",
+      "foto": ""
+    }
   ]
 }
