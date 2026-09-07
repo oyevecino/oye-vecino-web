@@ -491,16 +491,19 @@
     font-size:1.6rem;
     color:#fff;
     background:linear-gradient(135deg, var(--azul-main), var(--azul-soft));
-    background-size:cover;
-    background-position:center 15%;
     overflow:hidden;
+  }
+  .team-photo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center 15%;
+    display:block;
   }
   .team-card:nth-child(2n) .team-photo{
     background:linear-gradient(135deg, var(--amarillo), #f4c265);
     color:var(--azul-deep);
   }
-  .team-card:nth-child(2n) .team-photo.has-photo{background:none;}
-  .team-photo.has-photo{background-color:transparent;}
   .team-card .team-name{
     font-family:'League Spartan', sans-serif;
     font-weight:700;
@@ -515,6 +518,10 @@
     text-transform:uppercase;
     color:var(--amarillo);
     margin-bottom:0.8rem;
+    min-height:2.4em;
+    display:flex;
+    align-items:center;
+    justify-content:center;
   }
   .team-card .team-bio{
     font-size:0.92rem;
@@ -2082,13 +2089,15 @@
   // Editable desde /admin (panel de contenido) o directamente en content/equipo.json
   const teamGrid = document.getElementById('team-grid');
   function teamCardHTML(m){
-    const photoStyle = m.foto ? ` style="background-image:url('${m.foto}')"` : '';
     const photoClass = m.foto ? ' has-photo' : '';
     const iniciales = (m.nombre || '').split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
     const frase = m.frase ? `“${m.frase.replace(/^["“]|["”]$/g, '')}”` : (m.bio || '');
+    const photoInner = m.foto
+      ? `<img src="${m.foto}" alt="${escapeHTML(m.nombre || '')}" loading="eager" decoding="sync">`
+      : escapeHTML(iniciales);
     return `
       <div class="team-card stagger-item">
-        <div class="team-photo${photoClass}"${photoStyle}>${m.foto ? '' : escapeHTML(iniciales)}</div>
+        <div class="team-photo${photoClass}">${photoInner}</div>
         <div class="team-name">${escapeHTML(m.nombre || '')}</div>
         <div class="team-role">${escapeHTML(m.rol || '')}</div>
         <p class="team-bio">${escapeHTML(frase)}</p>
