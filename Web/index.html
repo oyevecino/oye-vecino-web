@@ -492,7 +492,7 @@
     color:#fff;
     background:linear-gradient(135deg, var(--azul-main), var(--azul-soft));
     background-size:cover;
-    background-position:center;
+    background-position:center 15%;
     overflow:hidden;
   }
   .team-card:nth-child(2n) .team-photo{
@@ -522,6 +522,7 @@
     color:var(--text-muted);
     max-width:230px;
     margin:0 auto;
+    font-style:italic;
   }
 
   .horizon-build{
@@ -2084,12 +2085,13 @@
     const photoStyle = m.foto ? ` style="background-image:url('${m.foto}')"` : '';
     const photoClass = m.foto ? ' has-photo' : '';
     const iniciales = (m.nombre || '').split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+    const frase = m.frase ? `“${m.frase.replace(/^["“]|["”]$/g, '')}”` : (m.bio || '');
     return `
       <div class="team-card stagger-item">
         <div class="team-photo${photoClass}"${photoStyle}>${m.foto ? '' : escapeHTML(iniciales)}</div>
         <div class="team-name">${escapeHTML(m.nombre || '')}</div>
         <div class="team-role">${escapeHTML(m.rol || '')}</div>
-        <p class="team-bio">${escapeHTML(m.bio || '')}</p>
+        <p class="team-bio">${escapeHTML(frase)}</p>
       </div>`;
   }
   function renderTeam(equipo){

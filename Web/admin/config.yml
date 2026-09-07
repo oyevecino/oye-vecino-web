@@ -73,5 +73,6 @@ collections:
             fields:
               - { label: "Nombre", name: "nombre", widget: "string" }
               - { label: "Rol", name: "rol", widget: "string" }
-              - { label: "Descripción", name: "bio", widget: "text" }
+              - { label: "Frase (aparece en itálica debajo del rol)", name: "frase", widget: "string", required: false }
+              - { label: "Descripción (se usa solo si no hay frase)", name: "bio", widget: "text", required: false }
               - { label: "Foto", name: "foto", widget: "image", required: false }
