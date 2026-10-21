@@ -1,0 +1,82 @@
+{
+  "inicio": {
+    "entradilla": "Desde Madrid, **OYE VECINO** conecta el compromiso de la diáspora venezolana con la recuperación de las comunidades impactadas por los terremotos del 24 de junio de 2026.",
+    "boton_principal": "Colabora con el proyecto",
+    "enlace_secundario": "Cómo usamos el dinero"
+  },
+  "quienes": {
+    "antetitulo": "Quiénes somos",
+    "titulo": "Cinco venezolanos, un mismo punto de partida",
+    "intro": "Aunque llevamos años lejos de Venezuela, nunca hemos dejado de sentirla como nuestra casa. Ante lo que está pasando, nos hicimos una pregunta sencilla: ¿Qué podemos hacer desde aquí que realmente sirva?",
+    "titulo_equipo": "Las personas detrás de Oye Vecino",
+    "parrafos": [
+      "Empezamos apoyando la respuesta a la emergencia, pero entendimos que también había que pensar en lo que viene después. Por eso, nuestro foco está en ayudar a las familias que han perdido su hogar, trabajando en vivienda transicional y reconstrucción para que puedan volver a tener un lugar al que llamar casa.",
+      "Nuestro objetivo es acompañar a las familias más afectadas más allá de la emergencia: desde encontrar un lugar seguro donde vivir temporalmente hasta recuperar, cuando sea posible, un hogar estable. Queremos construir un proyecto que genere soluciones reales y duraderas, y que se base en algo fundamental: transparencia, comunicando abiertamente cada euro, cada alianza y cada decisión, porque Venezuela sigue siendo nuestra casa y desde aquí también podemos hacer algo."
+    ],
+    "frase": "Nadie se levanta solo.",
+    "frase_destacada": "Tampoco nosotros lo intentamos hacer solos."
+  },
+  "cinta": {
+    "frases": ["Lo que nos une, nos impulsa", "Transparencia en cada euro", "De Madrid a Venezuela"]
+  },
+  "contexto": {
+    "antetitulo": "Por qué existimos",
+    "titulo": "El puente que falta entre la emergencia y el hogar",
+    "parrafos": [
+      "El 24 de junio de 2026, dos terremotos de magnitud 7,2 y 7,5 sacudieron Venezuela con apenas 39 segundos de diferencia. La Guaira fue la zona más afectada, aunque los daños se extendieron a Caracas y otros estados del país. A día de hoy, el balance oficial eleva a {fallecidos} las personas fallecidas, mientras que 6.462 han sido rescatadas y 226.696 atendidas en hospitales. Además, más de 60.000 viviendas han sido evaluadas, con 11.001 clasificadas como de alto riesgo.",
+      "Más de dos meses después, la emergencia continúa. Miles de familias siguen viviendo en campamentos y refugios temporales, mientras la ayuda humanitaria ha disminuido y persisten necesidades básicas como agua, alimentos e insumos médicos. Al mismo tiempo, la reconstrucción avanza lentamente: hasta el 24 de agosto se habían retirado apenas el 28,61% de los escombros previstos y solo se habían entregado 335 viviendas a familias afectadas.",
+      "**OYE VECINO nace para acompañar precisamente esta etapa.** Desde Madrid, buscamos canalizar recursos de forma transparente y verificable hacia soluciones de vivienda transicional y reconstrucción, ayudando a que las familias que perdieron su hogar puedan pasar de una situación de emergencia a un lugar seguro y estable donde volver a construir su vida."
+    ]
+  },
+  "como_funciona": {
+    "antetitulo": "El proceso",
+    "titulo": "Así funciona",
+    "intro": "De cada acción a las familias, en cuatro pasos. Cada uno queda publicado en la sección de recaudación.",
+    "pasos": [
+      { "titulo": "Organizamos", "texto": "Acciones solidarias en Madrid, con causa explícita. También son bienvenidas las iniciativas desde otros países." },
+      { "titulo": "Recaudamos", "texto": "Entradas, donaciones y aportes de personas y empresas colaboradoras." },
+      { "titulo": "Rendimos cuentas", "texto": "Publicamos lo recaudado, los costes y el neto de cada acción, con su desglose." },
+      { "titulo": "Llega a las familias", "texto": "El 100% de lo recaudado se destina al proyecto: vivienda transicional y apoyo directo." }
+    ]
+  },
+  "acciones": {
+    "antetitulo": "Lo que estamos haciendo",
+    "titulo": "Nuestras acciones"
+  },
+  "recaudacion": {
+    "antetitulo": "Transparencia",
+    "titulo": "Recaudación",
+    "intro": "Aquí publicamos lo recaudado en cada evento, ya descontados los costes, junto con las donaciones y aportes que recibimos de personas y empresas colaboradoras. Actualizamos esta sección después de cada evento o aporte."
+  },
+  "mision": {
+    "antetitulo": "Misión y visión",
+    "titulo": "Desde los cimientos",
+    "mision": "Construir el puente entre quienes se fueron y quienes se quedan reconstruyendo.",
+    "vision": "Demostrar que la distancia no es excusa para construir futuro juntos."
+  },
+  "enfoque": {
+    "antetitulo": "Cómo trabajamos",
+    "titulo": "Tres frentes, un mismo objetivo",
+    "vivienda": { "titulo": "Vivienda transicional", "texto": "Canalizamos recursos hacia soluciones habitacionales intermedias destinadas a familias que perdieron su hogar, mientras avanza la reconstrucción definitiva." },
+    "apoyo": { "titulo": "Apoyo directo a familias", "texto": "Identificamos, junto a contactos de confianza y personas sobre el terreno, las necesidades concretas de las familias afectadas. Desde Madrid, gestionamos y adquirimos los recursos necesarios para hacer llegar ayuda tangible y verificable." },
+    "puente": { "titulo": "Puente con los venezolanos en el exterior", "texto": "Movilizamos a la comunidad venezolana en el exterior y a colaboradores aliados a través de eventos y comunicación clara." }
+  },
+  "participar": {
+    "antetitulo": "Cómo participar",
+    "titulo": "Suma desde donde estés",
+    "acciones": { "etiqueta": "01. Acciones", "titulo": "Participa en nuestras acciones", "texto": "Estamos desarrollando las primeras acciones solidarias en Madrid, con causa explícita y cifras públicas al cierre de cada una. También son bienvenidas las iniciativas o contribuciones provenientes de otros países." },
+    "colaboracion": { "etiqueta": "02. Colaboración", "titulo": "Aporta tiempo o contactos", "texto": "¿Tienes contacto con organizaciones, medios de comunicación o empresas que puedan sumarse a esta iniciativa? Escríbenos: así se construyen las primeras alianzas." },
+    "donaciones": { "etiqueta": "03. Donaciones", "titulo": "Donaciones", "texto": "Ya tenemos la asociación constituida. Pronto abriremos para que puedas donar de forma transparente y segura." }
+  },
+  "contacto": {
+    "antetitulo": "Hablemos",
+    "titulo": "Contáctanos",
+    "intro": "¿Quieres colaborar, proponer una alianza o conocer más sobre el avance del proyecto? Estamos en Madrid y respondemos personalmente cada mensaje.",
+    "nota": "Responderemos en un plazo máximo de 3 días."
+  },
+  "pie": {
+    "eslogan": "Lo que nos une,",
+    "eslogan_destacado": "nos impulsa.",
+    "descripcion": "Asociación sin ánimo de lucro constituida en Madrid."
+  }
+}

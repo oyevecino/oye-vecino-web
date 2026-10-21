@@ -1,32 +1,79 @@
+# Panel de contenido de Oye Vecino (Decap CMS)
+# Se entra en https://oyevecino.netlify.app/admin/ con la cuenta de Netlify Identity.
+# Cada vez que pulsas «Publicar», el cambio se guarda en GitHub y Netlify
+# vuelve a publicar la web en menos de un minuto.
+
 backend:
   name: git-gateway
   branch: main
+  commit_messages:
+    create: "Panel: crear {{collection}} «{{slug}}»"
+    update: "Panel: actualizar {{collection}} «{{slug}}»"
+    delete: "Panel: borrar {{collection}} «{{slug}}»"
+    uploadMedia: "Panel: subir «{{path}}»"
+    deleteMedia: "Panel: borrar «{{path}}»"
+
+# Solo para editar en el propio ordenador con «npx decap-server»; en la web publicada no hace nada.
+local_backend: true
+
+locale: "es"
+site_url: "https://oyevecino.netlify.app"
+display_url: "https://oyevecino.netlify.app"
+logo_url: "/assets/logo-color.png"
 
 media_folder: "Web/content/uploads"
 public_folder: "/content/uploads"
 
 collections:
+
+  # ───────────────────────── ACCIONES ─────────────────────────
   - name: "eventos"
-    label: "Eventos"
+    label: "Acciones"
+    label_singular: "acción"
+    description: "Todo lo que hace la asociación: eventos, entregas de ayuda, donaciones y alianzas. La próxima acción destacada aparece en la portada y en la franja azul del inicio."
     files:
       - file: "Web/content/eventos.json"
-        label: "Lista de eventos"
+        label: "Acciones de Oye Vecino"
         name: "eventos"
         fields:
-          - label: "Eventos"
+          - label: "Acciones"
             name: "eventos"
+            label_singular: "acción"
             widget: "list"
-            summary: "{{nombre}} — {{fecha}}"
+            add_to_top: true
+            collapsed: true
+            summary: "{{fields.fecha}} · {{fields.tipo}} · {{fields.nombre}}"
+            hint: "Las nuevas se añaden arriba. La web las ordena sola por fecha."
             fields:
-              - { label: "Nombre", name: "nombre", widget: "string" }
-              - { label: "Fecha", name: "fecha", widget: "string", hint: "Ej: 01 Ago 2026" }
-              - { label: "Lugar", name: "lugar", widget: "string", required: false }
-              - { label: "Descripción", name: "bio", widget: "text" }
-              - { label: "Mostrar en portada (destacado)", name: "destacado", widget: "boolean", default: true }
-              - { label: "Foto de portada", name: "cover", widget: "image", required: false }
+              - { label: "Nombre de la acción", name: "nombre", widget: "string", hint: "Corto y claro. Ej.: Concierto solidario en Lavapiés" }
+              - label: "Tipo"
+                name: "tipo"
+                widget: "select"
+                default: "Evento"
+                options: ["Evento", "Entrega de ayuda", "Donación", "Alianza", "Otro"]
+              - { label: "Fecha", name: "fecha", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }
+              - { label: "Hora", name: "hora", widget: "string", required: false, pattern: ["^([01]?\\d|2[0-3]):[0-5]\\d$", "Usa el formato 19:30"], hint: "Ej.: 19:30" }
+              - { label: "Lugar", name: "lugar", widget: "string", required: false, hint: "Ej.: Madrid, Sala X" }
+              - { label: "Descripción", name: "bio", widget: "text", hint: "Dos o tres frases: qué es, para qué sirve y cómo participar." }
+              - { label: "Enlace de entradas o inscripción", name: "enlace", widget: "string", required: false, pattern: ["^https?://", "Pega la dirección completa, empezando por https://"], hint: "Aparece como botón dentro de la acción." }
+              - { label: "Destacar en la portada", name: "destacado", widget: "boolean", default: true, hint: "Si está activado y es la próxima en el calendario, sale grande en la portada." }
+              - { label: "Foto de portada", name: "cover", widget: "image", required: false, choose_url: false, hint: "Horizontal, ideal 1600 × 1000 px y menos de 500 KB. Si no pones foto, se usa una imagen con los colores de la marca." }
+              - label: "Galería"
+                name: "galeria"
+                label_singular: "foto o vídeo"
+                widget: "list"
+                required: false
+                collapsed: true
+                summary: "{{fields.archivo}}"
+                hint: "Fotos o vídeos cortos de la acción; se ven al abrirla en la web."
+                fields:
+                  - { label: "Foto o vídeo", name: "archivo", widget: "file", choose_url: false }
 
+  # ───────────────────────── RECAUDACIÓN ─────────────────────────
   - name: "recaudacion"
     label: "Recaudación"
+    label_singular: "registro"
+    description: "Cada registro es una acción o un aporte. El total, los dólares y las barras de la web se calculan solos a partir de estos datos."
     files:
       - file: "Web/content/recaudacion.json"
         label: "Registros de recaudación"
@@ -34,33 +81,48 @@ collections:
         fields:
           - label: "Registros"
             name: "registros"
+            label_singular: "registro"
             widget: "list"
-            summary: "{{titulo}} — {{fecha}}"
+            add_to_top: true
+            collapsed: true
+            summary: "{{fields.fecha}} · {{fields.titulo}} · neto {{fields.neto}} €"
+            hint: "Todos los importes en euros. La conversión a dólares la hace la web con el tipo de cambio del día."
             fields:
-              - { label: "Título (usa el mismo nombre del evento si aplica)", name: "titulo", widget: "string" }
-              - { label: "Fecha", name: "fecha", widget: "string", hint: "Ej: 01 Ago 2026" }
-              - { label: "Recaudado bruto (opcional)", name: "bruto", widget: "number", required: false, value_type: "float" }
-              - { label: "Costes", name: "costes", widget: "number", value_type: "float" }
-              - { label: "Neto al fondo", name: "neto", widget: "number", value_type: "float" }
-              - { label: "Notas", name: "notas", widget: "text", required: false }
+              - { label: "Título", name: "titulo", widget: "string", hint: "Usa el mismo nombre que la acción, si viene de una. Ej.: Concierto solidario en Lavapiés" }
+              - { label: "Fecha", name: "fecha", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }
+              - { label: "Recaudado bruto (€)", name: "bruto", widget: "number", required: false, value_type: "float", min: 0, hint: "Todo lo que entró antes de pagar gastos. Opcional si solo tienes el neto." }
+              - { label: "Costes (€)", name: "costes", widget: "number", value_type: "float", default: 0, min: 0, hint: "Lo que costó organizarlo. Pon 0 si no hubo costes." }
+              - { label: "Neto al proyecto (€)", name: "neto", widget: "number", required: false, value_type: "float", min: 0, hint: "Lo que va al proyecto. Si lo dejas vacío, la web lo calcula: bruto − costes." }
               - label: "Desglose de gastos"
                 name: "desglose_gastos"
+                label_singular: "gasto"
                 widget: "list"
                 required: false
+                collapsed: true
+                summary: "{{fields.concepto}} · {{fields.monto}} €"
+                hint: "Recomendable: es lo que da confianza a quien dona."
                 fields:
-                  - { label: "Concepto", name: "concepto", widget: "string" }
-                  - { label: "Monto", name: "monto", widget: "number", value_type: "float" }
+                  - { label: "Concepto", name: "concepto", widget: "string", hint: "Ej.: Alquiler de la sala" }
+                  - { label: "Importe (€)", name: "monto", widget: "number", value_type: "float", min: 0 }
               - label: "Donaciones y aportes"
                 name: "donaciones"
+                label_singular: "aporte"
                 widget: "list"
                 required: false
+                collapsed: true
+                summary: "{{fields.origen}} · {{fields.monto}} €"
+                hint: "De dónde salió el dinero."
                 fields:
-                  - { label: "Origen", name: "origen", widget: "string" }
+                  - { label: "Origen", name: "origen", widget: "string", hint: "Ej.: Entradas del evento, Empresa X, Donación anónima. No pongas nombres de personas sin su permiso." }
                   - { label: "Nota", name: "nota", widget: "string", required: false }
-                  - { label: "Monto", name: "monto", widget: "number", value_type: "float" }
+                  - { label: "Importe (€)", name: "monto", widget: "number", value_type: "float", min: 0 }
+              - { label: "Notas", name: "notas", widget: "text", required: false, hint: "Aclaraciones que se verán al abrir el registro." }
 
+  # ───────────────────────── EQUIPO ─────────────────────────
   - name: "equipo"
     label: "Equipo"
+    label_singular: "miembro"
+    description: "Las personas que aparecen en «Quiénes somos». El orden de la lista es el orden de la web."
     files:
       - file: "Web/content/equipo.json"
         label: "Miembros del equipo"
@@ -68,11 +130,175 @@ collections:
         fields:
           - label: "Miembros"
             name: "miembros"
+            label_singular: "miembro"
             widget: "list"
-            summary: "{{nombre}} — {{rol}}"
+            collapsed: true
+            summary: "{{fields.nombre}} · {{fields.rol}}"
+            hint: "Arrastra para cambiar el orden."
             fields:
               - { label: "Nombre", name: "nombre", widget: "string" }
-              - { label: "Rol", name: "rol", widget: "string" }
-              - { label: "Frase (aparece en itálica debajo del rol)", name: "frase", widget: "string", required: false }
-              - { label: "Descripción (se usa solo si no hay frase)", name: "bio", widget: "text", required: false }
-              - { label: "Foto", name: "foto", widget: "image", required: false }
+              - { label: "Cargo", name: "rol", widget: "string", hint: "Ej.: Tesorería · Finanzas" }
+              - { label: "Frase", name: "frase", widget: "string", required: false, hint: "Sale en la burbuja amarilla al pasar el ratón o tocar la foto." }
+              - { label: "Foto", name: "foto", widget: "image", required: false, choose_url: false, hint: "Vertical (4:5), fondo claro y la cara centrada. Ideal 480 × 600 px." }
+
+  # ───────────────────────── TEXTOS ─────────────────────────
+  - name: "textos"
+    label: "Textos de la página"
+    description: "Los textos de cada sección de la web. Puedes escribir **así** para poner algo en negrita. Si dejas un campo vacío, la web mantiene el texto original."
+    editor:
+      preview: false
+    files:
+      - file: "Web/content/textos.json"
+        label: "Textos de la página"
+        name: "textos"
+        fields:
+          - label: "Inicio"
+            name: "inicio"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Texto bajo el titular", name: "entradilla", widget: "text" }
+              - { label: "Botón principal", name: "boton_principal", widget: "string", hint: "Cuando actives las donaciones en Ajustes, cambia solo a «Donar al proyecto»." }
+              - { label: "Enlace junto al botón", name: "enlace_secundario", widget: "string" }
+          - label: "Quiénes somos"
+            name: "quienes"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Antetítulo", name: "antetitulo", widget: "string" }
+              - { label: "Título", name: "titulo", widget: "string" }
+              - { label: "Introducción", name: "intro", widget: "text" }
+              - { label: "Título del equipo", name: "titulo_equipo", widget: "string" }
+              - { label: "Párrafos", name: "parrafos", widget: "list", field: { label: "Párrafo", name: "parrafo", widget: "text" } }
+              - { label: "Frase", name: "frase", widget: "string" }
+              - { label: "Frase destacada (en amarillo)", name: "frase_destacada", widget: "string" }
+          - label: "Cinta de frases"
+            name: "cinta"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Frases", name: "frases", widget: "list", field: { label: "Frase", name: "frase", widget: "string" }, hint: "Se repiten en bucle en la franja amarilla." }
+          - label: "Contexto"
+            name: "contexto"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Antetítulo", name: "antetitulo", widget: "string" }
+              - { label: "Título", name: "titulo", widget: "string" }
+              - { label: "Párrafos", name: "parrafos", widget: "list", field: { label: "Párrafo", name: "parrafo", widget: "text" }, hint: "Escribe {fallecidos} donde quieras la cifra de fallecidos de Ajustes." }
+          - label: "Así funciona"
+            name: "como_funciona"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Antetítulo", name: "antetitulo", widget: "string" }
+              - { label: "Título", name: "titulo", widget: "string" }
+              - { label: "Introducción", name: "intro", widget: "text" }
+              - label: "Pasos"
+                name: "pasos"
+                label_singular: "paso"
+                widget: "list"
+                min: 2
+                max: 6
+                summary: "{{fields.titulo}}"
+                fields:
+                  - { label: "Título", name: "titulo", widget: "string" }
+                  - { label: "Texto", name: "texto", widget: "text" }
+          - label: "Nuestras acciones"
+            name: "acciones"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Antetítulo", name: "antetitulo", widget: "string" }
+              - { label: "Título", name: "titulo", widget: "string" }
+          - label: "Recaudación"
+            name: "recaudacion"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Antetítulo", name: "antetitulo", widget: "string" }
+              - { label: "Título", name: "titulo", widget: "string" }
+              - { label: "Introducción", name: "intro", widget: "text" }
+          - label: "Misión y visión"
+            name: "mision"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Antetítulo", name: "antetitulo", widget: "string" }
+              - { label: "Título", name: "titulo", widget: "string" }
+              - { label: "Misión", name: "mision", widget: "text" }
+              - { label: "Visión", name: "vision", widget: "text" }
+          - label: "Cómo trabajamos"
+            name: "enfoque"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Antetítulo", name: "antetitulo", widget: "string" }
+              - { label: "Título", name: "titulo", widget: "string" }
+              - { label: "Vivienda transicional (con la foto)", name: "vivienda", widget: "object", fields: [ { label: "Título", name: "titulo", widget: "string" }, { label: "Texto", name: "texto", widget: "text" } ] }
+              - { label: "Segundo frente", name: "apoyo", widget: "object", fields: [ { label: "Título", name: "titulo", widget: "string" }, { label: "Texto", name: "texto", widget: "text" } ] }
+              - { label: "Tercer frente", name: "puente", widget: "object", fields: [ { label: "Título", name: "titulo", widget: "string" }, { label: "Texto", name: "texto", widget: "text" } ] }
+          - label: "Suma desde donde estés"
+            name: "participar"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Antetítulo", name: "antetitulo", widget: "string" }
+              - { label: "Título", name: "titulo", widget: "string" }
+              - { label: "Tarjeta 1 · Acciones", name: "acciones", widget: "object", fields: [ { label: "Etiqueta", name: "etiqueta", widget: "string" }, { label: "Título", name: "titulo", widget: "string" }, { label: "Texto", name: "texto", widget: "text" } ] }
+              - { label: "Tarjeta 2 · Colaboración", name: "colaboracion", widget: "object", fields: [ { label: "Etiqueta", name: "etiqueta", widget: "string" }, { label: "Título", name: "titulo", widget: "string" }, { label: "Texto", name: "texto", widget: "text" } ] }
+              - { label: "Tarjeta 3 · Donaciones", name: "donaciones", widget: "object", fields: [ { label: "Etiqueta", name: "etiqueta", widget: "string" }, { label: "Título", name: "titulo", widget: "string" }, { label: "Texto mientras no hay donaciones", name: "texto", widget: "text", hint: "Cuando abras las donaciones en Ajustes, se usa el texto de Ajustes." } ] }
+          - label: "Contacto"
+            name: "contacto"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Antetítulo", name: "antetitulo", widget: "string" }
+              - { label: "Título", name: "titulo", widget: "string" }
+              - { label: "Introducción", name: "intro", widget: "text" }
+              - { label: "Nota bajo el formulario", name: "nota", widget: "string" }
+          - label: "Pie de página"
+            name: "pie"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Eslogan", name: "eslogan", widget: "string" }
+              - { label: "Eslogan destacado (en amarillo)", name: "eslogan_destacado", widget: "string" }
+              - { label: "Descripción", name: "descripcion", widget: "string" }
+
+  # ───────────────────────── AJUSTES ─────────────────────────
+  - name: "ajustes"
+    label: "Ajustes"
+    description: "Donaciones, cifras del contexto y datos de contacto."
+    files:
+      - file: "Web/content/ajustes.json"
+        label: "Ajustes de la web"
+        name: "ajustes"
+        fields:
+          - label: "Donaciones"
+            name: "donaciones"
+            widget: "object"
+            collapsed: false
+            fields:
+              - { label: "Donaciones abiertas", name: "activas", widget: "boolean", default: false, hint: "Al activarlo, el botón principal pasa a «Donar al proyecto» y la tarjeta de donaciones muestra estos datos." }
+              - { label: "Texto con las donaciones abiertas", name: "texto", widget: "text", required: false, default: "Puedes donar de forma transparente y segura. Cada aporte aparece publicado en la sección de recaudación." }
+              - { label: "Enlace para donar", name: "enlace", widget: "string", required: false, pattern: ["^https?://", "Pega la dirección completa, empezando por https://"], hint: "Página de pago, GoFundMe, Stripe, etc." }
+              - { label: "IBAN", name: "iban", widget: "string", required: false, pattern: ["^[A-Z]{2}\\d{2}[A-Z0-9 ]{10,32}$", "Revisa el IBAN: empieza por ES y dos números, en mayúsculas"], hint: "Ej.: ES12 3456 7890 1234 5678 9012" }
+              - { label: "Bizum", name: "bizum", widget: "string", required: false, hint: "Número o código de Bizum para ONG." }
+          - label: "Balance oficial de los terremotos"
+            name: "balance"
+            widget: "object"
+            collapsed: false
+            fields:
+              - { label: "Personas fallecidas", name: "fallecidos", widget: "number", value_type: "int", min: 0, hint: "Aparece en la cifra grande y en el texto del contexto." }
+              - { label: "Fecha del balance", name: "fecha", widget: "string", hint: "Tal como se lee en la web. Ej.: 24 de agosto" }
+              - { label: "Enlace a la fuente", name: "fuente", widget: "string", pattern: ["^https?://", "Pega la dirección completa, empezando por https://"] }
+          - label: "Contacto y redes"
+            name: "contacto"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "Correo", name: "email", widget: "string", pattern: ["^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$", "Escribe un correo válido"] }
+              - { label: "Instagram", name: "instagram", widget: "string", pattern: ["^https?://", "Pega la dirección completa del perfil"] }
+              - { label: "TikTok", name: "tiktok", widget: "string", pattern: ["^https?://", "Pega la dirección completa del perfil"] }
+              - { label: "X", name: "x", widget: "string", required: false, pattern: ["^https?://", "Pega la dirección completa del perfil"], hint: "Déjalo vacío para quitar X de la web." }

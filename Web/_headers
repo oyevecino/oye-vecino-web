@@ -1,0 +1,14 @@
+# Cabeceras de Netlify para toda la web
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+
+# Los datos del panel deben verse al momento tras publicar
+/content/*.json
+  Cache-Control: public, max-age=0, must-revalidate
+
+# El panel no debe aparecer en buscadores
+/admin/*
+  X-Robots-Tag: noindex

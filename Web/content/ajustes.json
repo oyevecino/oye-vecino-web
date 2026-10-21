@@ -1,0 +1,20 @@
+{
+  "donaciones": {
+    "activas": false,
+    "texto": "Puedes donar de forma transparente y segura. Cada aporte aparece publicado en la sección de recaudación.",
+    "enlace": "",
+    "iban": "",
+    "bizum": ""
+  },
+  "balance": {
+    "fallecidos": 6509,
+    "fecha": "24 de agosto",
+    "fuente": "https://eldiario.com/2026/08/24/terremotos-en-venezuela-muertos-heridos/"
+  },
+  "contacto": {
+    "email": "oyevecinovzla@gmail.com",
+    "instagram": "https://www.instagram.com/oyevecino_/",
+    "tiktok": "https://www.tiktok.com/@oyevecino_",
+    "x": "https://x.com/oyevecino"
+  }
+}
