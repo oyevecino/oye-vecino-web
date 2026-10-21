@@ -137,6 +137,12 @@
   @keyframes cue{to{top:100%;}}
 
   .js:not(.reduced):not(.intro-done) [data-intro]{opacity:0;}
+  /* Nothing in the hero shows before its entrance (the safety timeout in <head> lifts this if scripts fail) */
+  .js:not(.reduced):not(.intro-done) .hero h1 .wi{transform:translateY(118%);}
+  .js:not(.reduced):not(.intro-done) .hero .dot,
+  .js:not(.reduced):not(.intro-done) .mark img{opacity:0;}
+  .js:not(.reduced):not(.intro-done) .stroke path{stroke-dashoffset:1;}
+  .js:not(.reduced):not(.intro-done) .band{clip-path:inset(0 0 0 100%);}
 
   /* Spotlight that follows the cursor across the band */
   .band::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(420px circle at var(--mx,50%) var(--my,30%), rgba(255,255,255,.09), transparent 60%);opacity:0;transition:opacity .5s;}
@@ -157,6 +163,13 @@
   .curtain__line .hl{color:var(--amber);}
   /* The curtain opens as plain blue; the logo and the line appear only when the animation runs */
   .curtain .half-l,.curtain .half-r,.curtain__line{opacity:0;}
+  /* Elements revealed on scroll start hidden, so they never flash in before their entrance */
+  .anim .member{opacity:0;transform:translateY(50px);}
+  .anim .member__ph{clip-path:inset(100% 0 0 0 round 18px);}
+  .anim .front{opacity:0;transform:translateY(60px);}
+  .anim .front--main .photo{clip-path:inset(100% 0 0 0);}
+  .anim .ev-list li,.anim #events .empty,.anim .row,.anim #ledger .empty{opacity:0;transform:translateY(30px);}
+  .anim .row .split__bar{clip-path:inset(0 100% 0 0 round 99px);}
 
   @media (min-width:961px){
     #como-funciona{min-height:100svh;display:flex;align-items:center;}
@@ -898,6 +911,7 @@
   const reduced = root.classList.contains('reduced');
   const hasGsap = !!(window.gsap && window.ScrollTrigger);
   const finePointer = matchMedia('(hover:hover) and (pointer:fine)').matches;
+  if (hasGsap && !reduced) root.classList.add('anim');
   const $ = (s, c=document) => c.querySelector(s);
   const $$ = (s, c=document) => [...c.querySelectorAll(s)];
 
@@ -1069,11 +1083,10 @@
       .from('.band', {clipPath:'inset(0 0 0 100%)', duration:1.3, ease:'power4.inOut'}, 0)
       .from('.next', {y:20, opacity:0, duration:.9}, 1.35)
       .from('.scroll-cue', {opacity:0, duration:.8}, 1.6);
-    // The curtain already showed the logo joining; without it, the band does it.
-    if (curtainPlayed) tl.from('.mark', {scale:.85, opacity:0, duration:1.4, ease:'expo.out'}, .5);
-    else tl.fromTo('.mark .half-l', {xPercent:-45, rotate:-10, opacity:0}, {xPercent:0, rotate:0, opacity:1, duration:1.5, ease:'expo.out'}, .65)
-           .fromTo('.mark .half-r', {xPercent:45, rotate:10, opacity:0}, {xPercent:0, rotate:0, opacity:1, duration:1.5, ease:'expo.out'}, .65)
-           .from('.mark', {scale:.9, duration:1.7, ease:'expo.out'}, .65);
+    // The band logo always splits and comes back together once the band has opened
+    tl.fromTo('.mark .half-l', {xPercent:-45, rotate:-10, opacity:0}, {xPercent:0, rotate:0, opacity:1, duration:1.5, ease:'expo.out'}, .75)
+      .fromTo('.mark .half-r', {xPercent:45, rotate:10, opacity:0}, {xPercent:0, rotate:0, opacity:1, duration:1.5, ease:'expo.out'}, .75)
+      .fromTo('.mark', {scale:.9}, {scale:1, duration:1.7, ease:'expo.out'}, .75);
   }
   const fontsReady = (document.fonts && document.fonts.ready) ? Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1200))]) : Promise.resolve();
   fontsReady.then(curtain).then(intro);
@@ -1348,10 +1361,8 @@
     if (!hasGsap || reduced) return;
     gsap.to('.progress', {scaleX:1, ease:'none', scrollTrigger:{trigger:document.body, start:'top top', end:'bottom bottom', scrub:.3}});
 
-    // Leaving the hero: the type drifts up and the logo halves part slightly
+    // Leaving the hero: the type drifts up (the logo stays put)
     gsap.to('.hero__text > *:not(.scroll-cue)', {yPercent:-12, ease:'none', scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:true}});
-    gsap.to('.mark .half-l', {xPercent:-10, ease:'none', scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:true}});
-    gsap.to('.mark .half-r', {xPercent:10, ease:'none', scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:true}});
 
     // Headings rise word by word
     $$('.sec [data-split], .footer [data-split]').forEach(el => {
@@ -1360,15 +1371,8 @@
     $$('.sec .kicker').forEach(el => gsap.from(el, {x:-16, opacity:0, duration:.8, ease:'power3.out', scrollTrigger:{trigger:el, start:'top 90%'}}));
     $$('[data-reveal]').forEach(el => gsap.from(el, {y:36, opacity:0, duration:1.1, ease:'power3.out', scrollTrigger:{trigger:el, start:'top 88%'}}));
 
-    // Marquee: constant drift, speeds up and follows scroll direction
-    const loop = gsap.to('.marquee__track', {xPercent:-50, repeat:-1, duration:38, ease:'none'});
-    let dir = 1;
-    ScrollTrigger.create({trigger:'.marquee', start:'top bottom', end:'bottom top', onUpdate: self => {
-      const v = self.getVelocity();
-      if (v) dir = v > 0 ? 1 : -1;
-      gsap.to(loop, {timeScale: dir * (1 + Math.min(Math.abs(v) / 400, 5)), duration:.3, overwrite:true});
-      gsap.to(loop, {timeScale: dir, duration:1.2, delay:.3, overwrite:false});
-    }});
+    // Marquee: steady drift at its own pace, independent of scroll
+    gsap.to('.marquee__track', {xPercent:-50, repeat:-1, duration:38, ease:'none'});
 
     // Context photo: unmask + slow zoom
     gsap.fromTo('.context__photo', {clipPath:'inset(14% 8% 14% 8% round 26px)'}, {clipPath:'inset(0% 0% 0% 0% round 26px)', ease:'none', scrollTrigger:{trigger:'#contexto', start:'top 85%', end:'top 25%', scrub:1}});
@@ -1403,10 +1407,12 @@
     gsap.from('.mv__tag', {scaleX:0, transformOrigin:'0 50%', duration:1, stagger:.2, ease:'power3.out', scrollTrigger:{trigger:'.mv', start:'top 85%'}});
 
     // Fronts: the container-city photo opens like a curtain
-    gsap.fromTo('.front--main .photo', {clipPath:'inset(100% 0 0 0)'}, {clipPath:'inset(0% 0 0 0)', duration:1.4, ease:'power4.inOut', scrollTrigger:{trigger:'.fronts', start:'top 80%'}});
+
     gsap.to('.front--main .photo img', {scale:1, ease:'none', scrollTrigger:{trigger:'.fronts', start:'top bottom', end:'bottom top', scrub:true}});
     ScrollTrigger.batch('.front', {start:'top 88%', once:true, onEnter: els => {
-      gsap.from(els, {y:60, opacity:0, duration:1.1, ease:'power3.out', stagger:.12});
+      gsap.to(els, {y:0, opacity:1, duration:1.1, ease:'power3.out', stagger:.12});
+      const photo = els.map(e => $('.photo', e)).filter(Boolean);
+      if (photo.length) gsap.fromTo(photo, {clipPath:'inset(100% 0% 0% 0%)'}, {clipPath:'inset(0% 0% 0% 0%)', duration:1.4, ease:'power4.inOut', delay:.15});
       els.forEach((el, k) => gsap.fromTo($$('.icon *', el), {strokeDashoffset:1}, {strokeDashoffset:0, duration:1.4, ease:'power2.inOut', delay:.4 + k * .12, stagger:.15}));
     }});
 
@@ -1425,15 +1431,15 @@
   function animateDynamic(){
     if (!hasGsap || reduced) return;
     ScrollTrigger.batch('.member', {start:'top 90%', once:true, onEnter: els => {
-      gsap.from(els, {y:50, opacity:0, duration:1, ease:'power3.out', stagger:.09});
-      gsap.fromTo(els.map(e => $('.member__ph', e)), {clipPath:'inset(100% 0 0 0 round 18px)'}, {clipPath:'inset(0% 0 0 0 round 18px)', duration:1.2, ease:'power4.inOut', stagger:.09});
+      gsap.to(els, {y:0, opacity:1, duration:1, ease:'power3.out', stagger:.09});
+      gsap.fromTo(els.map(e => $('.member__ph', e)), {clipPath:'inset(100% 0% 0% 0% round 18px)'}, {clipPath:'inset(0% 0% 0% 0% round 18px)', duration:1.2, ease:'power4.inOut', stagger:.09});
     }});
     const feat = $('.feature');
     if (feat){
       gsap.from(feat, {y:60, opacity:0, duration:1.2, ease:'power3.out', scrollTrigger:{trigger:feat, start:'top 88%'}});
       gsap.to($('.feature__media', feat), {yPercent:8, ease:'none', scrollTrigger:{trigger:feat, start:'top bottom', end:'bottom top', scrub:true}});
     }
-    ScrollTrigger.batch('.ev-list li, #events .empty', {start:'top 92%', once:true, onEnter: els => gsap.from(els, {y:30, opacity:0, duration:.9, ease:'power3.out', stagger:.08})});
+    ScrollTrigger.batch('.ev-list li, #events .empty', {start:'top 92%', once:true, onEnter: els => gsap.to(els, {y:0, opacity:1, duration:.9, ease:'power3.out', stagger:.08})});
     const total = $('.count-eur');
     if (total && +total.dataset.to > 0){
       const o = {v:0}, to = +total.dataset.to;
@@ -1441,8 +1447,8 @@
     }
     gsap.from('.totals > div', {y:30, opacity:0, duration:1, stagger:.1, ease:'power3.out', scrollTrigger:{trigger:'.totals', start:'top 88%'}});
     ScrollTrigger.batch('.row, #ledger .empty', {start:'top 92%', once:true, onEnter: els => {
-      gsap.from(els, {y:30, opacity:0, duration:.9, ease:'power3.out', stagger:.08});
-      els.forEach(el => { const bar = $('.split__bar', el); if (bar) gsap.from(bar, {clipPath:'inset(0 100% 0 0 round 99px)', duration:1.4, ease:'power3.inOut', delay:.2}); });
+      gsap.to(els, {y:0, opacity:1, duration:.9, ease:'power3.out', stagger:.08});
+      els.forEach(el => { const bar = $('.split__bar', el); if (bar) gsap.fromTo(bar, {clipPath:'inset(0% 100% 0% 0% round 99px)'}, {clipPath:'inset(0% 0% 0% 0% round 99px)', duration:1.4, ease:'power3.inOut', delay:.2}); });
     }});
     ScrollTrigger.refresh();
   }
